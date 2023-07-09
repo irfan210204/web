@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Program Parkir</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Program Parkir</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="info.html">Info Parkir</a></li>
+            <li><a href="contact.html">Kontak</a></li>
+        </ul>
+    </nav>
+    <section id="homeSection">
+        <h2>Selamat datang di Program Parkir</h2>
+        <p>Silakan isi formulir di bawah ini untuk mendapatkan kode parkir.</p>
+        <form id="parkingForm">
+            <label for="plat">Nomor Plat Kendaraan:</label>
+            <input type="text" id="plat" name="plat" required>
+            <input type="submit" value="Dapatkan Kode Parkir">
+            <form id="parkingForm" onsubmit="addVehicle(); return false;">
+                <!-- ... -->
+            </form>
+</html>
