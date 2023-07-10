@@ -17,10 +17,67 @@
     </nav>
     <section>
         <h2>Informasi Parkir</h2>
-        <p>Info tentang parkir dapat ditemukan di sini.</p>
+        <form id="parkingForm">
+            <label for="plat">Nomor Plat Kendaraan:</label>
+            <input type="text" id="plat" name="plat" required>
+            <input type="submit" value="Dapatkan Kode Parkir">
+        </form>
+        <ul id="parkingList"></ul>
     </section>
-    <footer>
-        <p>&copy; 2023 Program Parkir</p>
-    </footer>
+    <script>
+        // Menampilkan data saat halaman dimuat
+        window.addEventListener("DOMContentLoaded", function() {
+            showParkingData();
+        });
+
+        // Menambahkan data parkir baru
+        document.getElementById("parkingForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var plat = document.getElementById("plat").value;
+            if (plat.trim() !== "") {
+                addParkingData(plat);
+                document.getElementById("plat").value = ""; // Mengosongkan input setelah ditambahkan
+            }
+        });
+
+        // Menyimpan data parkir ke penyimpanan lokal
+        function saveParkingData(parkingData) {
+            localStorage.setItem("parkingData", JSON.stringify(parkingData));
+        }
+
+        // Mendapatkan data parkir dari penyimpanan lokal
+        function getParkingData() {
+            var parkingData = localStorage.getItem("parkingData");
+            return parkingData ? JSON.parse(parkingData) : [];
+        }
+
+        // Menampilkan data parkir pada halaman
+        function showParkingData() {
+            var parkingData = getParkingData();
+
+            // Mengurutkan data berdasarkan nomor plat
+            parkingData.sort(function(a, b) {
+                return a.plat.localeCompare(b.plat);
+            });
+
+            var parkingList = document.getElementById("parkingList");
+            parkingList.innerHTML = "";
+
+            for (var i = 0; i < parkingData.length; i++) {
+                var li = document.createElement("li");
+                li.textContent = parkingData[i].plat;
+                parkingList.appendChild(li);
+            }
+        }
+
+        // Menambahkan data parkir baru ke penyimpanan lokal
+        function addParkingData(plat) {
+            var parkingData = getParkingData();
+            parkingData.push({ plat: plat });
+            saveParkingData(parkingData);
+            showParkingData();
+        }
+    </script>
 </body>
 </html>
