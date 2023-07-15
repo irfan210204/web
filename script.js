@@ -1,25 +1,42 @@
-var vehicles = [];
+var parkingData = [];
 
-function addVehicle() {
-    var platInput = document.getElementById('plat');
-    var plat = platInput.value;
-    if (plat !== '') {
-        vehicles.push(plat);
-        platInput.value = '';
-        showVehicleList();
+function saveParkingData() {
+    localStorage.setItem("parkingData", JSON.stringify(parkingData));
+}
+
+function getParkingData() {
+    var parkingDataString = localStorage.getItem("parkingData");
+    return parkingDataString ? JSON.parse(parkingDataString) : [];
+}
+
+function showParkingData() {
+    parkingData = getParkingData();
+    var parkingList = document.getElementById("parkingList");
+    parkingList.innerHTML = "";
+
+    for (var i = 0; i < parkingData.length; i++) {
+        var li = document.createElement("li");
+        li.textContent = parkingData[i].plat;
+        parkingList.appendChild(li);
     }
 }
 
-function showVehicleList() {
-    var vehicleList = document.getElementById('vehicleList');
-    vehicleList.innerHTML = '';
-
-    vehicles.forEach(function(vehicle) {
-        var li = document.createElement('li');
-        li.textContent = vehicle;
-        vehicleList.appendChild(li);
-    });
+function addParkingData(plat) {
+    parkingData.push({ plat: plat });
+    saveParkingData();
+    showParkingData();
 }
 
-showVehicleList();
+window.addEventListener("DOMContentLoaded", function() {
+    showParkingData();
+});
 
+document.getElementById("parkingForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    var plat = document.getElementById("plat").value;
+    if (plat.trim() !== "") {
+        addParkingData(plat);
+        document.getElementById("plat").value = "";
+    }
+});
